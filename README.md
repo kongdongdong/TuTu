@@ -94,7 +94,7 @@
 
 
 
-3、然后你只要把布局添加进去就好了，同时开启轮播图
+3、然后你只要把布局和轮播图对象添加进去就好了，同时开启轮播图
 
     TuTu tu = new TuTu(ad_viewPage, tv_msg, ll_dian, mContext, listADbeans);//把布局添加进去
 	tu.startViewPager(4000);//动态设置滑动间隔，并且开启轮播图
