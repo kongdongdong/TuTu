@@ -26,12 +26,26 @@ public class MyAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		
 		//根据位置取出某一个View
-		ImageView view = listADbeans.get(position%listADbeans.size()).getmImageView();
-		if(listADbeans.get(position%listADbeans.size()).getImgPath() != -1){
-			LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-			view.setBackgroundResource(listADbeans.get(position%listADbeans.size()).getImgPath());
+		ImageView view = null;
+		if(listADbeans.size()==1){
+			view = listADbeans.get(0).getmImageView();
+			if(listADbeans.get(0).getImgPath() != -1){
+				view.setBackgroundResource(listADbeans.get(0).getImgPath());
+			}
+		}else{
+			view = listADbeans.get(position%listADbeans.size()).getmImageView();
+			if(listADbeans.get(position%listADbeans.size()).getImgPath() != -1){
+				view.setBackgroundResource(listADbeans.get(position%listADbeans.size()).getImgPath());
+			}
 		}
+		
+		
 		view.setScaleType(ScaleType.FIT_XY);
+		ViewGroup parent = (ViewGroup) view.getParent();
+		 if (parent != null ) {
+			 //parent.removeView(view);
+			 container.removeView(view);
+		 } 
 		//添加到容器
 		container.addView(view);
 		
@@ -56,7 +70,7 @@ public class MyAdapter extends PagerAdapter {
 	public void destroyItem(ViewGroup container, int position, Object object) {
 		
 		//释放资源,
-		container.removeView((View) object);
+		//container.removeView((View) object);
 		
 	}
 	

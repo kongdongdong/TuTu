@@ -60,12 +60,12 @@ public class MainActivityTwo extends Activity{
 	 */
 	private void initAD() {
 		listADbeans = new ArrayList<ADBean>();
-		for(int i =0;i<5;i++){
+		for(int i =0;i<2;i++){
 			ADBean bean = new ADBean();
 			bean.setAdName(des[i]);
 			bean.setId(i+"");
-			//bean.setImgUrl(urls[i]);
-			bean.setImgPath(ids[i]);
+			bean.setImgUrl(urls[i]);
+			//bean.setImgPath(ids[i]);
 			listADbeans.add(bean);
 		}
 		tu = new TuTu(ad_viewPage, tv_msg, ll_dian, mContext, listADbeans);

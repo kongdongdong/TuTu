@@ -45,7 +45,8 @@ public class TuTu {
 		public void handleMessage(android.os.Message msg) {
 			int what = msg.what;
 			if(what == 0){
-				mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
+					mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1, true);
+				
 			}
 			if(what ==1){
 				myPagerAdapter.notifyImages(listADbeans);
@@ -115,6 +116,9 @@ public class TuTu {
 		}
 		int midPosition = Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
 				% listADbeans.size();
+		/*if(listADbeans.size()==1){
+			midPosition = 0;
+		}*/
 		mViewPager.setCurrentItem(midPosition);
 		// 设置页面改变监听
 		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
