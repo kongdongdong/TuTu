@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -12,8 +13,10 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class MyAdapter extends PagerAdapter {
 	List<ADBean> listADbeans;
+	OnItemClickListener onItemClickListener;
 	public MyAdapter(List<ADBean> listADbeans) {
 		this.listADbeans = listADbeans;
+		
 	}
 	public int getCount() {
 		//把这个条数数值很大很大
@@ -23,7 +26,7 @@ public class MyAdapter extends PagerAdapter {
 	 * container:ViewPage 容器
 	 * position 位置
 	 */
-	public Object instantiateItem(ViewGroup container, int position) {
+	public Object instantiateItem(ViewGroup container, final int position) {
 		
 		//根据位置取出某一个View
 		ImageView view = null;
@@ -39,7 +42,6 @@ public class MyAdapter extends PagerAdapter {
 			}
 		}
 		
-		
 		view.setScaleType(ScaleType.FIT_XY);
 		ViewGroup parent = (ViewGroup) view.getParent();
 		 if (parent != null ) {
@@ -48,6 +50,14 @@ public class MyAdapter extends PagerAdapter {
 		 } 
 		//添加到容器
 		container.addView(view);
+		/**
+		 * 添加点击事件
+		 */
+		view.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				onItemClickListener.OnItemClick(v, position%listADbeans.size());
+			}
+		});
 		
 		return view;//返回实例化的View
 	}
@@ -79,5 +89,11 @@ public class MyAdapter extends PagerAdapter {
 		notifyDataSetChanged();
 	}
 	
+	public interface OnItemClickListener{
+		void OnItemClick(View view,int position);
+	}
 	
+	public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+		this.onItemClickListener = onItemClickListener;
+	}
 }

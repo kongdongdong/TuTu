@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.example.lunbotu.ImageUtil.ImageCallback;
+import com.example.lunbotu.MyAdapter.OnItemClickListener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,6 +19,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
@@ -26,7 +29,7 @@ import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
-public class TuTu {
+public class TuTu implements OnItemClickListener  {
 	public static final String TAG = "TuTu";
 	private ViewPager mViewPager;
 	private TextView mTextView;
@@ -40,6 +43,7 @@ public class TuTu {
 	private List<ADBean> listADbeans;
 	private Context mContext;
 	private ImageUtil imageUtil;
+	private int newPosition=0;
 	private long delay=4000;
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -62,7 +66,6 @@ public class TuTu {
 		imageUtil = new ImageUtil(mContext);
 		//changeViewpagerSpace();
 		initADViewpager();
-		
 		
 	}
 	
@@ -109,6 +112,7 @@ public class TuTu {
 		}
 		// 设置适配器
 		myPagerAdapter = new MyAdapter(listADbeans);
+		myPagerAdapter.setOnItemClickListener(this);
 		mViewPager.setAdapter(myPagerAdapter);
 		// 设置默认文字信息
 		if(listADbeans!= null && listADbeans.size()>0 && mTextView!= null){
@@ -129,11 +133,9 @@ public class TuTu {
 			 */
 			@Override
 			public void onPageSelected(int position) {
+				newPosition = position % listADbeans.size();
 				
-	            
 				
-				
-				int newPosition = position % listADbeans.size();
 				// 取出广告文字
 				String msg = listADbeans.get(position % listADbeans.size()).getAdName();
 				if(mTextView!=null){
@@ -180,7 +182,7 @@ public class TuTu {
 		
 		isRunning = true;
 		getNetImages();
-		//handler.sendEmptyMessageDelayed(0, 4000);
+		
 	}
 	/**
 	 * 加载网络图片
@@ -296,5 +298,14 @@ public class TuTu {
     public static int px2dip(Context context, float pxValue) {  
         final float scale = context.getResources().getDisplayMetrics().density;  
         return (int) (pxValue / scale + 0.5f);  
-    }  
+    }
+    /**
+     * viewpager的item点击事件
+     */
+	@Override
+	public void OnItemClick(View view, int position) {
+		System.out.println(position+"");
+		
+	}
+
 }
