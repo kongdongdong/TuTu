@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 public class MyAdapter extends PagerAdapter {
-	List<ADBean> listADbeans;
+	List<ADBean> listADbeans=null;
 	OnItemClickListener onItemClickListener;
 	public MyAdapter(List<ADBean> listADbeans) {
 		this.listADbeans = listADbeans;
@@ -20,7 +20,12 @@ public class MyAdapter extends PagerAdapter {
 	}
 	public int getCount() {
 		//把这个条数数值很大很大
-		return Integer.MAX_VALUE;
+		if(listADbeans != null && listADbeans.size()==1){
+			return 1;
+		}else{
+			return Integer.MAX_VALUE;
+		}
+		
 	}
 	/**相当于getView:实例化每个页面的View和添加View
 	 * container:ViewPage 容器
@@ -40,14 +45,17 @@ public class MyAdapter extends PagerAdapter {
 			if(listADbeans.get(position%listADbeans.size()).getImgPath() != -1){
 				view.setBackgroundResource(listADbeans.get(position%listADbeans.size()).getImgPath());
 			}
+			ViewGroup parent = (ViewGroup) view.getParent();
+			 if (parent != null ) {
+				 //parent.removeView(view);
+				 container.removeView(view);
+			 } 
 		}
 		
+		
+		
 		view.setScaleType(ScaleType.FIT_XY);
-		ViewGroup parent = (ViewGroup) view.getParent();
-		 if (parent != null ) {
-			 //parent.removeView(view);
-			 container.removeView(view);
-		 } 
+		
 		//添加到容器
 		container.addView(view);
 		/**
