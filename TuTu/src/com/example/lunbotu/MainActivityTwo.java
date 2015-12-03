@@ -83,9 +83,6 @@ public class MainActivityTwo extends Activity{
 	 * 销毁轮播图
 	 */
 	@Override
-	protected void onDestroy() {
-		tu.destroyView();
-		super.onDestroy();
-	}
+	protected void onDestroy() {  }
 	
 }
