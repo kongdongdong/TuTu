@@ -1,6 +1,7 @@
 package com.example.lunbotu;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +38,25 @@ public class ImageUtil {
 	public ImageUtil(Context mContext) {
 		this.mContext = mContext;
 	}
+	/**
+	 * 对图片进行质量压�?
+	 * @param image
+	 * @return
+	 */
+	public  Bitmap compressImage(Bitmap image) {
 
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这�?00表示不压缩，把压缩后的数据存放到baos�?
+		int options = 100;
+		while ( baos.toByteArray().length / 1024 > 800) {	//循环判断如果压缩后图片是否大�?00kb,大于继续压缩		
+			baos.reset();//重置baos即清空baos
+			image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos�?
+			options -= 10;//每次都减�?0
+		}
+		ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream�?
+		Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+		return bitmap;
+	}
 	/**
 	 * JPG图片缓存
 	 * 
@@ -167,16 +186,9 @@ public class ImageUtil {
 										imageName += ".png";
 									}
 									String mImagePath = ImageUtil.IMAGE_PATH+imageName;
-									/*if (url.endsWith(".png")) {
-										saveImagePng(mImagePath, mbitmap);
-									} else if (url.endsWith(".jpg")) {
-										saveImageJpeg(mImagePath, mbitmap);
-									}*/
 									saveBitmapToData(imageName, mbitmap, mContext);
-									// System.out.println("向SD卡获取图片");
 		
 								} catch (Exception e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
@@ -216,23 +228,9 @@ public class ImageUtil {
 				Bitmap bitmap = null;
 				if (url != null && !"".equals(url)) {
 					byte[] b = getUrlBytes(url);
-					/*
-					 * BitmapFactory.Options opts = new
-					 * BitmapFactory.Options(); opts.inJustDecodeBounds
-					 * = true;
-					 * BitmapFactory.decodeStream(getUrlInputStream
-					 * (imgUrl), null, opts);
-					 * 
-					 * opts.inSampleSize = computeSampleSize(opts, -1,
-					 * 128*128); opts.inJustDecodeBounds = false; try {
-					 * bitmap =
-					 * BitmapFactory.decodeStream(getUrlInputStream
-					 * (imgUrl), null, opts); } catch (OutOfMemoryError
-					 * err) { }
-					 */
 					bitmap = BitmapFactory.decodeByteArray(b, 0,
 							b.length);
-					// Bitmap bitmap = BitmapFactory.decodeStream(bis);
+					bitmap = compressImage(bitmap);
 				}
 				Message msg = mHandler.obtainMessage();
 				Map<String, Bitmap> bitmapMap = new HashMap<String, Bitmap>();

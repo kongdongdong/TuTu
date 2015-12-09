@@ -58,7 +58,7 @@ public class MainActivityTwo extends Activity{
 	 */
 	private void initAD() {
 		listADbeans = new ArrayList<ADBean>();
-		for(int i =0;i<2;i++){
+		for(int i =0;i<5;i++){
 			ADBean bean = new ADBean();
 			bean.setAdName(des[i]);
 			bean.setId(i+"");
@@ -83,6 +83,9 @@ public class MainActivityTwo extends Activity{
 	 * 销毁轮播图
 	 */
 	@Override
-	protected void onDestroy() {  }
+	protected void onDestroy() {  
+		tu.destroyView();
+		super.onDestroy();
+	}
 	
 }
