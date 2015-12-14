@@ -7,8 +7,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.lunbotu.widget.CircleFlowIndicator;
+import com.example.lunbotu.widget.ImageAdapter;
+import com.example.lunbotu.widget.TuTu2;
+import com.example.lunbotu.widget.ViewFlow;
 
 public class MainActivityTwo extends Activity{
 
@@ -25,7 +31,7 @@ public class MainActivityTwo extends Activity{
 	 * 轮播图对象列表
 	 */
 	List<ADBean> listADbeans;
-	
+	List<ADBean> listADbeans2;
 	/**
 	 * 本地图片资源
 	 */
@@ -46,12 +52,46 @@ public class MainActivityTwo extends Activity{
 	
 	private TuTu tu;
 	private Context mContext;
+	private ViewFlow viewFlow;
+	private ImageAdapter imageAdapter;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mContext = this;
 		initView();
-		initAD();
+		//initAD();
+		initAD2();
+	}
+	private void initAD2() {
+		listADbeans2 = new ArrayList<ADBean>();
+		for(int i =0;i<5;i++){
+			ADBean bean = new ADBean();
+			bean.setmImageView(new ImageView(mContext));
+			bean.setAdName(des[i]);
+			bean.setId(i+"");
+			bean.setImgUrl(urls[i]);//网络图片
+			//bean.setImgPath(ids[i]);
+			listADbeans2.add(bean);
+		}
+		
+		imageAdapter = new ImageAdapter(this,listADbeans2);
+		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
+		viewFlow.setAdapter(imageAdapter);
+		viewFlow.setmSideBuffer(listADbeans2.size()); // 实际图片张数， 我的ImageAdapter实际图片张数为3
+		
+		CircleFlowIndicator indic = (CircleFlowIndicator) findViewById(R.id.viewflowindic);
+		TuTu2 tutu2 = new TuTu2(this,viewFlow,listADbeans2,imageAdapter);
+		tutu2.setFlowIndicator(indic);
+		tutu2.setTimeSpan(4000);
+		tutu2.setSelection(3 * 1000); // 设置初始位置
+		tutu2.startAutoFlowTimer(); // 启动自动播放
+		tutu2.getNetImage();
+		/*viewFlow.setFlowIndicator(indic);
+		viewFlow.setTimeSpan(4000);
+		viewFlow.setSelection(3 * 1000); // 设置初始位置
+		viewFlow.startAutoFlowTimer(); // 启动自动播放
+*/		
 	}
 	/**
 	 * 初始化轮播图

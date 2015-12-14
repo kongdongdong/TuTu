@@ -1,5 +1,6 @@
 package com.example.lunbotu;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 public class ADBean {
@@ -9,7 +10,7 @@ public class ADBean {
 	private String imgUrl;//网络图片资源
 	private int imgPath=-1;//本地图片资源
 	private ImageView mImageView;
-	
+	private Bitmap bitmap;
 	
 	
 	public ImageView getmImageView() {
@@ -41,6 +42,12 @@ public class ADBean {
 	}
 	public void setImgPath(int imgPath) {
 		this.imgPath = imgPath;
+	}
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 	
 	

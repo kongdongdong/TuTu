@@ -142,9 +142,9 @@ public class ImageUtil {
 	 */
 	Bitmap mbitmap = null;
 	String url = null;
-	public Bitmap loadImage(final String imageName, final String imgUrl,
+	public void loadImage(final String imageName, final String imgUrl,
 			final boolean isbusy, final ImageCallback callback) {
-		
+		callback.onStart(imgUrl);
 		Bitmap bitmap = null;
 		if (imageCache.containsKey(imgUrl)) {
 			SoftReference<Bitmap> softReference = imageCache.get(imgUrl);
@@ -152,19 +152,13 @@ public class ImageUtil {
 			if (bitmap != null) {
 				Log.i(TuTu.TAG, "从内存获得图片成功。。");
 				callback.loadImage(bitmap, imgUrl);
-				return bitmap;
 			}
 		}
-		// if(!isbusy){
-		// 从本地获取图片
 		bitmap = getBitmapFromData(imageName, mContext);
-		// System.out.println("从本地获取图片");
-		// }
 		if (bitmap != null) {
 			imageCache.put(imgUrl, new SoftReference<Bitmap>(bitmap));
 			Log.i(TuTu.TAG, "从本地获得图片成功。。");
 			callback.loadImage(bitmap, imgUrl);
-			return bitmap;
 		} else {// 从网络获取图片
 			final Handler handler = new Handler() {
 				@Override
@@ -204,7 +198,6 @@ public class ImageUtil {
 			getImageRunnable run = new getImageRunnable(imgUrl,handler,callback);
 			ThreadPoolManager.getInstance().addTask(run);
 		}
-		return bitmap;
 	}
 	
 	class getImageRunnable implements Runnable{
@@ -222,7 +215,7 @@ public class ImageUtil {
 		public void run() {
 			try {
 				synchronized (imageCache) {
-					mCallback.onStart(url);
+					
 				}
 				
 				Bitmap bitmap = null;
@@ -230,7 +223,7 @@ public class ImageUtil {
 					byte[] b = getUrlBytes(url);
 					bitmap = BitmapFactory.decodeByteArray(b, 0,
 							b.length);
-					bitmap = compressImage(bitmap);
+					//bitmap = compressImage(bitmap);
 				}
 				Message msg = mHandler.obtainMessage();
 				Map<String, Bitmap> bitmapMap = new HashMap<String, Bitmap>();

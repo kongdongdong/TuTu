@@ -248,16 +248,16 @@ public class TuTu implements OnItemClickListener  {
 	}
 	
 	public void destroyView() {
-		if(timer!= null){
+		if(timer != null){
 			timer.cancel();
 		}
 		if(timerTask!= null){
-			timer.cancel();
+			timerTask.cancel();
 		}
 	}
 	
 	public class FixedSpeedScroller extends Scroller {
-	    private int mDuration = 300;
+	    private int mDuration = 400;
 	 
 	    public FixedSpeedScroller(Context context) {
 	        super(context);
